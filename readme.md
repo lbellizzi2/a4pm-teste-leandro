@@ -27,14 +27,14 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 #### No Linux/Mac (Bash)
 
 ```bash
-[setup-projects.sh](http://_vscodecontentref_/0)
+./setup-projects.sh
 ```
 ./setup-projects.sh
 
 #### No Windows (PowerShell)
 
 ```bash
-bash [setup-projects.sh](http://_vscodecontentref_/1)
+bash setup-projects.sh
 ```
 
 Durante a execução do script, será solicitado que você escolha a versão do vue-jest a ser instalada. Basta selecionar a primeira opção pressionando Enter.
