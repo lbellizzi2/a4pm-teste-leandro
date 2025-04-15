@@ -1,0 +1,22 @@
+{
+  "name": "integrated-test",
+  "version": "1.0.0",
+  "description": "integrated test for a4pm test",
+  "main": "index.js",
+  "author": "Leandro Bellizzi",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "axios": "^1.8.4",
+    "dotenv": "^16.5.0",
+    "jest": "^29.7.0",
+    "jest-html-reporters": "^3.1.7",
+    "prisma": "^6.6.0",
+    "uuid": "^11.1.0"
+  }
+}

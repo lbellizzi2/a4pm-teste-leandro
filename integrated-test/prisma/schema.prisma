@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  nome        String?   @db.VarChar(100)
+  login       String    @unique(map: "login_UNIQUE") @db.VarChar(100)
+  senha       String    @db.VarChar(100)
+  criado_em   DateTime  @db.DateTime(0)
+  alterado_em DateTime  @db.DateTime(0)
+  receitas    Recipes[]
+
+  @@map("usuarios")
+}
+
+model Categories {
+  id       Int       @id @default(autoincrement()) @db.UnsignedInt
+  nome     String?   @unique(map: "nome_UNIQUE") @db.VarChar(100)
+  receitas Recipes[]
+
+  @@map("categorias")
+}
+
+model Recipes {
+  id                    Int         @id @default(autoincrement()) @db.UnsignedInt
+  id_usuarios           Int         @db.UnsignedInt
+  id_categorias         Int?        @db.UnsignedInt
+  nome                  String?     @db.VarChar(45)
+  tempo_preparo_minutos Int?        @db.UnsignedInt
+  porcoes               Int?        @db.UnsignedInt
+  modo_preparo          String      @db.Text
+  ingredientes          String?     @db.Text
+  criado_em             DateTime    @db.DateTime(0)
+  alterado_em           DateTime    @db.DateTime(0)
+  user                  Users       @relation(fields: [id_usuarios], references: [id], map: "fk_receitas_1")
+  categoria             Categories? @relation(fields: [id_categorias], references: [id], onDelete: Cascade, map: "fk_receitas_2")
+
+  @@index([id_usuarios], map: "fk_receitas_1_idx")
+  @@index([id_categorias], map: "fk_receitas_2_idx")
+  @@map("receitas")
+}

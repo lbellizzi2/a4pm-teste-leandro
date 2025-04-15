@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: recipes-service
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DB_HOST: database
+      DATABASE_URL: mysql://${DB_USERNAME}:${DB_PASSWORD}@recipes:${DATABASE_PORT}/${DB_DATABASE}
+      SECRET_KEY: ${SECRET_KEY}
+      API_KEY: ${API_KEY}
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - recipes-network
+
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - database:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - ${DATABASE_PORT}:3306
+    networks:
+      - recipes-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USERNAME}", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  database:
+
+networks:
+  recipes-network:
+    driver: bridge

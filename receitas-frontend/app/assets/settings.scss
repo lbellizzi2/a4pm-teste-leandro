@@ -1,0 +1,20 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+@use 'vuetify/settings' with (
+  $color-pack: false,
+  $layers: true,
+);
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+
+$body-font-family: 'Poppins', sans-serif;
+
+body {
+  background-color: var(--v-theme-secondary);
+  font-family: 'Poppins', sans-serif;
+}
